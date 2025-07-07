@@ -20,13 +20,12 @@ $(".button-start-welcome").on("click", function () {
 });
 // end creating the modals
 
-
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZmlubnF1aW5uIiwiYSI6ImNsdHExOTRuMzAxNzgya29lcmhlZ2ZqMmQifQ.NbOjHvjv_cws-eMLkMiSXQ";
 
 var map = new mapboxgl.Map({
   container: "map",
-  style: "mapbox://styles/finnquinn/clu7crwm100g601p6aufr9dfo",
+  style: "mapbox://styles/finnquinn/cmcjf6g4b001m01s1djtvdrqx",
   center: [-93.2650108, 44.977753],
   zoom: 6,
   preserveDrawingBuffer: true,
@@ -34,7 +33,6 @@ var map = new mapboxgl.Map({
   customAttribution:
     'created by <a style="padding: 0 3px 0 3px; color:#ffffff; background-color: #ff6517;" target="_blank" href=http://www.geocadder.bg/en/portfolio.html>GEOCADDER</a>',
 });
-
 
 // Add the geocoding control to the map.
 var geocoder = new MapboxGeocoder({
@@ -164,43 +162,42 @@ $.getJSON(
         bounds.extend([longitude, latitude]);
 
         var popupContent = "";
-            if (name) {
-              popupContent +=
-                "<div class='title'><b>" + name + "</b></div><hr>";
-            }
+        if (name) {
+          popupContent += "<div class='title'><b>" + name + "</b></div><hr>";
+        }
 
-            popupContent += "<p>Type : <b>" + businessType + "</b><p>";
+        popupContent += "<p>Type : <b>" + businessType + "</b><p>";
 
-            if (yearOpened) {
-              popupContent +=
-                "<p>Year Opened : <b>" + yearOpened + "</b><p>";
-            }
+        if (yearOpened) {
+          popupContent += "<p>Year Opened : <b>" + yearOpened + "</b><p>";
+        }
 
-            if (address) {
-              popupContent +=
-                "<div class='popup-link-div'><img class='address-icon' src='icons/location.png'><a class='web-links address-text' target='_blank' href='https://www.google.com/maps/dir//" +
-                latitude +
-                "," +
-                longitude +
-                "'>" +
-                address +
-                "</a></div>";
-            }
+        if (address) {
+          popupContent +=
+            "<div class='popup-link-div'><img class='address-icon' src='icons/location.png'><a class='web-links address-text' target='_blank' href='https://www.google.com/maps/dir//" +
+            latitude +
+            "," +
+            longitude +
+            "'>" +
+            address +
+            "</a></div>";
+        }
 
-            if (website) {
-              popupContent +=
-                "<div class='popup-link-div'><img class='address-icon' src='icons/website.png'><a class='web-links address-text' target='_blank' href='" +
-                website + "'>Website</a></div>";
-            }
+        if (website) {
+          popupContent +=
+            "<div class='popup-link-div'><img class='address-icon' src='icons/website.png'><a class='web-links address-text' target='_blank' href='" +
+            website +
+            "'>Website</a></div>";
+        }
 
-
-            if (phone) {
-              popupContent +=
-                "<div class='popup-link-div'><img class='address-icon' src='icons/phone.png'><a class='web-links address-text' target='_blank' href='tel:" +
-                phone + "'>" +
-                phone +
-                "</a></div>";
-            }
+        if (phone) {
+          popupContent +=
+            "<div class='popup-link-div'><img class='address-icon' src='icons/phone.png'><a class='web-links address-text' target='_blank' href='tel:" +
+            phone +
+            "'>" +
+            phone +
+            "</a></div>";
+        }
 
         popup = new mapboxgl.Popup({ closeOnClick: false }).setHTML(
           popupContent
@@ -261,8 +258,7 @@ $.getJSON(
             popupContent += "<p>Type : <b>" + businessType + "</b><p>";
 
             if (yearOpened) {
-              popupContent +=
-                "<p>Year Opened : <b>" + yearOpened + "</b><p>";
+              popupContent += "<p>Year Opened : <b>" + yearOpened + "</b><p>";
             }
 
             if (address) {
@@ -279,18 +275,18 @@ $.getJSON(
             if (website) {
               popupContent +=
                 "<div class='popup-link-div'><img class='address-icon' src='icons/website.png'><a class='web-links address-text' target='_blank' href='" +
-                website + "'>Website</a></div>";
+                website +
+                "'>Website</a></div>";
             }
-
 
             if (phone) {
               popupContent +=
                 "<div class='popup-link-div'><img class='address-icon' src='icons/phone.png'><a class='web-links address-text' target='_blank' href='tel:" +
-                phone + "'>" +
+                phone +
+                "'>" +
                 phone +
                 "</a></div>";
             }
-
 
             const popUps = document.getElementsByClassName("mapboxgl-popup");
             if (popUps[0]) popUps[0].remove();
@@ -324,7 +320,7 @@ $.getJSON(
           latitude: latitude,
           yearOpened: yearOpened,
           website: website,
-          phone: phone
+          phone: phone,
         });
       }
     });
@@ -378,14 +374,14 @@ $("#all-businesses").click(function () {
     $("input.business-input").prop("checked", true);
     selectAllBusinesses = true;
   }
-  for (i = 0; i <= allPointsAmount; i++) {    
-      if ($("#" + i).attr("data-business-type-visible") === "true") {
-        $("#" + i).css("display", "block");
-        $("#sidebar-details-point-id-" + i).css("display", "block");
-      } else {
-        $("#" + i).css("display", "none");
-        $("#sidebar-details-point-id-" + i).css("display", "none");
-      }
+  for (i = 0; i <= allPointsAmount; i++) {
+    if ($("#" + i).attr("data-business-type-visible") === "true") {
+      $("#" + i).css("display", "block");
+      $("#sidebar-details-point-id-" + i).css("display", "block");
+    } else {
+      $("#" + i).css("display", "none");
+      $("#sidebar-details-point-id-" + i).css("display", "none");
+    }
   }
 });
 
@@ -432,7 +428,6 @@ function createPopUp(currentFeature) {
     .setHTML(currentFeature["_popup"]["_content"]["innerHTML"])
     .addTo(map);
 }
-
 
 function getColor(type) {
   var color = "";
@@ -496,43 +491,45 @@ function searchByName(data) {
       });
 
       var popupContent = "";
-            if (positiveArray[0].name) {
-              popupContent +=
-                "<div class='title'><b>" + positiveArray[0].name + "</b></div><hr>";
-            }
+      if (positiveArray[0].name) {
+        popupContent +=
+          "<div class='title'><b>" + positiveArray[0].name + "</b></div><hr>";
+      }
 
-            popupContent += "<p>Type : <b>" + positiveArray[0].businessType + "</b><p>";
+      popupContent +=
+        "<p>Type : <b>" + positiveArray[0].businessType + "</b><p>";
 
-            if (positiveArray[0].yearOpened) {
-              popupContent +=
-                "<p>Year Opened : <b>" + positiveArray[0].yearOpened + "</b><p>";
-            }
+      if (positiveArray[0].yearOpened) {
+        popupContent +=
+          "<p>Year Opened : <b>" + positiveArray[0].yearOpened + "</b><p>";
+      }
 
-            if (positiveArray[0].address) {
-              popupContent +=
-                "<div class='popup-link-div'><img class='address-icon' src='icons/png/location.png'><a class='web-links address-text' target='_blank' href='https://www.google.com/maps/dir//" +
-                positiveArray[0].latitude +
-                "," +
-                positiveArray[0].longitude +
-                "'>" +
-                positiveArray[0].address +
-                "</a></div>";
-            }
+      if (positiveArray[0].address) {
+        popupContent +=
+          "<div class='popup-link-div'><img class='address-icon' src='icons/png/location.png'><a class='web-links address-text' target='_blank' href='https://www.google.com/maps/dir//" +
+          positiveArray[0].latitude +
+          "," +
+          positiveArray[0].longitude +
+          "'>" +
+          positiveArray[0].address +
+          "</a></div>";
+      }
 
-            if (positiveArray[0].website) {
-              popupContent +=
-                "<div class='popup-link-div'><img class='address-icon' src='icons/png/website.png'><a class='web-links address-text' target='_blank' href='" +
-                positiveArray[0].website + "'>Website</a></div>";
-            }
+      if (positiveArray[0].website) {
+        popupContent +=
+          "<div class='popup-link-div'><img class='address-icon' src='icons/png/website.png'><a class='web-links address-text' target='_blank' href='" +
+          positiveArray[0].website +
+          "'>Website</a></div>";
+      }
 
-
-            if (positiveArray[0].phone) {
-              popupContent +=
-                "<div class='popup-link-div'><img class='address-icon' src='icons/png/phone.png'><a class='web-links address-text' target='_blank' href='tel:" +
-                positiveArray[0].phone + "'>" +
-                positiveArray[0].phone +
-                "</a></div>";
-            }
+      if (positiveArray[0].phone) {
+        popupContent +=
+          "<div class='popup-link-div'><img class='address-icon' src='icons/png/phone.png'><a class='web-links address-text' target='_blank' href='tel:" +
+          positiveArray[0].phone +
+          "'>" +
+          positiveArray[0].phone +
+          "</a></div>";
+      }
 
       const popup = new mapboxgl.Popup({ closeOnClick: false })
         .setLngLat([positiveArray[0].longitude, positiveArray[0].latitude])
