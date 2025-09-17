@@ -3,10 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>Map :: created by GEOCADDER</title>
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans"
       rel="stylesheet"
@@ -41,64 +38,6 @@
   <body>
     <div class="welcome-first"></div>
 
-    <fieldset id="filter-by-business-type">
-      <div id="list1" class="dropdown-check-list" tabindex="100">
-        <span class="anchor">Sorting Traffic Garden Types</span>
-        <ul class="items">
-          <li>
-            <input
-              class="business-input"
-              name="filter-by-business-type-input"
-              id="all-businesses"
-              type="checkbox"
-              value="all-businesses"
-              checked
-            /><label for="all-businesses">Select All</label>
-          </li>
-          <li>
-            <input
-              class="business-input"
-              name="filter-by-business-type-input"
-              id="traffic-garden-court"
-              type="checkbox"
-              value="traffic-garden-court"
-              checked
-            /><label for="traffic-garden-court">Traffic Garden Court</label>
-          </li>
-          <li>
-            <input
-              class="business-input"
-              name="filter-by-business-type-input"
-              id="traffic-garden-park"
-              type="checkbox"
-              value="traffic-garden-park"
-              checked
-            /><label for="traffic-garden-park">Traffic Garden Park</label>
-          </li>
-          <!-- <li>
-            <input
-              class="business-input"
-              name="filter-by-business-type-input"
-              id="coming-soon"
-              type="checkbox"
-              value="coming-soon"
-              checked
-            /><label for="coming-soon">Coming Soon</label>
-          </li>
-          <li>
-            <input
-              class="business-input"
-              name="filter-by-business-type-input"
-              id="canadian-facilities"
-              type="checkbox"
-              value="canadian-facilities"
-              checked
-            /><label for="canadian-facilities">Canadian Facilities</label>
-          </li> -->
-        </ul>
-      </div>
-    </fieldset>
-
     <div id="sidebar-wrapper">
       <!-- Search for point of interest -->
       <!-- <div class="filter-ctrl">
@@ -125,9 +64,46 @@
       </div>
     </div>
 
-    <div id="map"></div>
-
-    
+    <div id="map-container">
+      <div id="map"></div>
+      <fieldset id="filter-by-business-type">
+        <div id="list1" class="dropdown-check-list" tabindex="100">
+          <span class="anchor">Filter Traffic Garden Types</span>
+          <ul class="items">
+            <li>
+              <input
+                class="business-input"
+                name="filter-by-business-type-input"
+                id="all-businesses"
+                type="checkbox"
+                value="all-businesses"
+                checked
+              /><label for="all-businesses">Select All</label>
+            </li>
+            <li>
+              <input
+                class="business-input"
+                name="filter-by-business-type-input"
+                id="traffic-garden-court"
+                type="checkbox"
+                value="traffic-garden-court"
+                checked
+              /><label for="traffic-garden-court">Traffic Garden Court</label>
+            </li>
+            <li>
+              <input
+                class="business-input"
+                name="filter-by-business-type-input"
+                id="traffic-garden-park"
+                type="checkbox"
+                value="traffic-garden-park"
+                checked
+              /><label for="traffic-garden-park">Traffic Garden Park</label>
+            </li>
+          </ul>
+        </div>
+      </fieldset>
+    </div>
 
     <script src="script.js"></script>
   </body>
