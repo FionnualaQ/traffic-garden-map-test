@@ -9,6 +9,12 @@ body {
   margin: 0;
   padding: 0;
   font-family: "GillSans";
+  /* Force proper scaling in iframes */
+  width: 100vw;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  font-size: 1rem;
 }
 
 #map {
@@ -1301,6 +1307,21 @@ width: 150px;
   }
 }
 
+/* Iframe mobile fixes - force proper scaling when embedded */
+@media screen and (max-width: 768px) {
+  html {
+    width: 100vw !important;
+    max-width: 100% !important;
+    overflow-x: hidden;
+  }
+
+  body {
+    transform-origin: top left;
+    width: 100vw !important;
+    max-width: 100% !important;
+  }
+}
+
 /* Additional mobile fixes */
 @media screen and (max-width: 768px) {
   /* Fix search bar width */
@@ -1335,7 +1356,7 @@ width: 150px;
   input#searchTxt {
     width: calc(100vw - 24px) !important;
     max-width: none;
-    font-size: 16px; /* Prevents zoom on iOS */
+    font-size: 1rem;
   }
 
   fieldset#filter-by-business-type {
