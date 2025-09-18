@@ -87,6 +87,47 @@ const ctrlPoint = new MapboxGLButtonControl({
 
 map.addControl(ctrlPoint, "top-right");
 
+function triggerFilters(event) {
+  const dropdown = $("#filter-by-business-type");
+  const button = $(".button-filters").closest(".mapboxgl-ctrl");
+
+  if (dropdown.hasClass("visible")) {
+    dropdown.removeClass("visible");
+  } else {
+    // Position dropdown relative to button
+    const buttonRect = button[0].getBoundingClientRect();
+    const mapContainer = $("#map-container")[0].getBoundingClientRect();
+
+    dropdown.css({
+      top: buttonRect.bottom - mapContainer.top + 5 + "px",
+      right: mapContainer.right - buttonRect.right + "px",
+    });
+
+    dropdown.addClass("visible");
+  }
+}
+
+/* Instantiate new controls with custom event handlers */
+const ctrlPointFilters = new MapboxGLButtonControl({
+  className: "button-filters",
+  title: "Filters",
+  eventHandler: triggerFilters,
+});
+
+map.addControl(ctrlPointFilters, "top-right");
+
+function triggerSidebar(event) {
+  $("#sidebar-wrapper").toggleClass("visible");
+}
+
+const ctrlPointLeft = new MapboxGLButtonControl({
+  className: "button-sidebar",
+  title: "View Traffic Garden List",
+  eventHandler: triggerSidebar,
+});
+
+map.addControl(ctrlPointLeft, "top-left");
+
 /* end adding custom control button */
 
 var selectAllBusinesses = true;
@@ -337,12 +378,13 @@ $.getJSON(
 );
 
 //////////////// open/close dropdown menu for business type filter
-var checkList = document.getElementById("list1");
-checkList.getElementsByClassName("anchor")[0].onclick = function (evt) {
-  if (checkList.classList.contains("visible"))
-    checkList.classList.remove("visible");
-  else checkList.classList.add("visible");
-};
+// Moved to button-filters control - see triggerFilters function
+// var checkList = document.getElementById("list1");
+// checkList.getElementsByClassName("anchor")[0].onclick = function (evt) {
+//   if (checkList.classList.contains("visible"))
+//     checkList.classList.remove("visible");
+//   else checkList.classList.add("visible");
+// };
 //////////////
 
 $("input[type='checkbox'][name='filter-by-business-type-input']").click(

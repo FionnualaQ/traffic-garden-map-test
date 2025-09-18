@@ -28,29 +28,39 @@ body {
 
 #sidebar-wrapper {
   position: absolute;
-  width: 20%;
+  width: 30%;
+  min-width: 250px;
   height: 100%;
   top: 0;
   left: 0;
-  /* overflow: scroll; */
+  z-index: 3;
+  background-color: white;
+  transform: translateX(-100%);
+  transition: transform 250ms ease-in-out;
+  will-change: transform;
+  overflow-y: scroll;
 }
+
+#sidebar-wrapper.visible {
+  transform: translateX(0%);
+  transition: transform 250ms ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+  #sidebar-wrapper {
+    width: 100%;
+  }
+}
+
 #sidebar {
-  /* position: absolute;
-    width: 20%;
-    height: 650px;
-    top: 0;
-    left: 0;
-    overflow: scroll; */
   height: 100%;
-  overflow: scroll;
-  /* margin-top: 40px; */
+  margin-top: 60px;
 }
 
 #map-container {
   position: absolute;
   height: 100vh;
-  width: 80%;
-  left: 20%;
+  width: 100%;
 }
 
 .mapboxgl-map {
@@ -170,9 +180,9 @@ a#donations-link:hover {
   width: 33%;
   min-width: 450px;
   height: 464px;
-  left: 43%;
+  left: 50%;
   top: 10%;
-  /* transition: left 0.7s ease; */
+  transform: translateX(-50%);
 }
 
 div.welcome-first {
@@ -297,21 +307,49 @@ span.welcome-close-button:hover {
   pointer-events: auto;
   background-image: url(icons/toggle-legend.png);
 }
+
+.button-filters {
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: auto;
+  background-image: url(icons/filter.png);
+}
+
+.button-sidebar {
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: auto;
+  background-image: url(icons/sidebar-menu.png);
+}
 /* end custom control / custom button */
 
-.mapboxgl-ctrl-top-right {
+.mapboxgl-ctrl-geocoder {
+  font-size: 1rem;
+}
+
+.mapboxgl-ctrl-top-right,
+.mapboxgl-ctrl-top-left {
   top: 0px;
   box-sizing: border-box;
 }
+
+.mapboxgl-ctrl-top-left {
+  z-index: 4;
+}
+
 @media screen and (max-width: 814px) {
+  .mapboxgl-ctrl-top-left {
+    margin-top: 8px;
+  }
+
   .mapboxgl-ctrl-top-right {
-    width: 100%;
-    right: unset;
+    width: 90%;
+    right: 0;
     padding: 10px;
   }
 
   .mapboxgl-ctrl-top-right .mapboxgl-ctrl {
-    margin: 10px 0px 0px 0px;
+    margin: 0px 0px 10px 0px;
   }
 
   /* everything but the search bar */
@@ -336,15 +374,18 @@ span.anchor {
 fieldset#filter-by-business-type,
 fieldset#filter-by-ownership-type {
   font-weight: 500;
-  width: 240px;
   background-color: #ffffff;
   position: absolute;
-  border: 1px solid #ffffff;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  margin: 10px 0 0 12px;
-  top: 10px;
-  left: 10px;
+  margin: 0;
   font-size: 17px;
+  z-index: 1000;
+  display: none;
+}
+
+fieldset#filter-by-business-type.visible {
+  display: block;
 }
 
 fieldset#filter-by-ownership-type {
@@ -356,43 +397,10 @@ fieldset#filter-by-ownership-type {
   display: inline-block;
 }
 
-.dropdown-check-list .anchor {
-  position: relative;
-  cursor: pointer;
-  display: inline-block;
-  padding: 5px 50px 5px 10px;
-  border: 1px solid #ccc;
-}
-
-.dropdown-check-list .anchor:after {
-  position: absolute;
-  content: "";
-  border-left: 2px solid black;
-  border-top: 2px solid black;
-  padding: 5px;
-  top: 26%;
-  right: 14px;
-  -moz-transform: rotate(135deg);
-  -ms-transform: rotate(135deg);
-  -o-transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
-  transform: rotate(135deg);
-}
-
-.dropdown-check-list.visible .anchor:after {
-  -moz-transform: rotate(225deg);
-  -ms-transform: rotate(225deg);
-  -o-transform: rotate(225deg);
-  -webkit-transform: rotate(225deg);
-  transform: rotate(225deg);
-  right: 10px;
-  top: 20%;
-}
-
 .dropdown-check-list ul.items {
   padding: 2px;
   padding-top: 8px;
-  display: none;
+  display: block;
   margin: 0;
 }
 
@@ -753,10 +761,10 @@ display: none;
 }
 
 @media screen and (max-width: 1327px) and (min-width: 814px) {
-  fieldset#filter-by-business-type {
+  /* fieldset#filter-by-business-type {
     right: 10px;
     z-index: 3;
-  }
+  } */
 
   fieldset#filter-by-ownership-type {
     left: 530px;
@@ -765,10 +773,10 @@ display: none;
 }
 
 @media screen and (max-width: 813px) and (min-width: 685px) {
-  fieldset#filter-by-business-type {
+  /* fieldset#filter-by-business-type {
     left: 160px;
     z-index: 3;
-  }
+  } */
 
   fieldset#filter-by-ownership-type {
     left: 410px;
@@ -785,15 +793,9 @@ display: none;
   }
 
   #map {
-    height: 70%;
+    height: 100%;
     width: 100%;
     left: 0;
-  }
-
-  #sidebar-wrapper {
-    top: 70%;
-    height: 30%;
-    width: 100%;
   }
 
   .mapboxgl-popup-content {
@@ -828,17 +830,13 @@ display: none;
   div#block-yui_3_17_2_1_1684184820496_4025 {
     height: 700px;
   }
-
-  .visible-welcome {
-    left: 33%;
-  }
 }
 
 @media screen and (max-width: 684px) and (min-width: 631px) {
-  fieldset#filter-by-business-type {
+  /* fieldset#filter-by-business-type {
     left: 160px;
     z-index: 3;
-  }
+  } */
 
   fieldset#filter-by-ownership-type {
     left: 160px;
@@ -856,15 +854,9 @@ display: none;
   }
 
   #map {
-    height: 70%;
+    height: 100%;
     width: 100%;
     left: 0;
-  }
-
-  #sidebar-wrapper {
-    top: 70%;
-    height: 30%;
-    width: 100%;
   }
 
   .mapboxgl-popup-content {
@@ -909,16 +901,17 @@ display: none;
   .visible-welcome {
     width: 25%;
     min-width: 450px;
-    left: 17%;
+    min-height: 525px;
+    left: 50%;
   }
 }
 
 @media screen and (max-width: 630px) and (min-width: 541px) {
-  fieldset#filter-by-business-type {
+  /* fieldset#filter-by-business-type {
     left: 10px;
     z-index: 3;
     top: 50%;
-  }
+  } */
   span.anchor {
     font-size: 12px !important;
   }
@@ -929,15 +922,9 @@ display: none;
   }
 
   #map {
-    height: 70%;
+    height: 100%;
     width: 100%;
     left: 0;
-  }
-
-  #sidebar-wrapper {
-    top: 70%;
-    height: 30%;
-    width: 100%;
   }
 
   .mapboxgl-popup-content {
@@ -982,7 +969,8 @@ display: none;
   .visible-welcome {
     width: 25%;
     min-width: 450px;
-    left: 10%;
+    min-height: 525px;
+    left: 50%;
   }
 
   /* .mapboxgl-popup-content {
@@ -996,20 +984,21 @@ width: 150px;
     min-width: 50px;
   }
 
-  fieldset#filter-by-business-type {
+  /* fieldset#filter-by-business-type {
     top: 50%;
-  }
+  } */
 
   .visible-welcome {
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 50%;
+    min-height: 525px;
     display: block;
     border-radius: 7px;
     background-color: white;
     left: 0px;
     z-index: 2001;
-    left: 0;
-    top: 0;
+    left: 50%;
+    top: 10%;
 
     /* transition: left 0.7s ease; */
   }
@@ -1035,11 +1024,11 @@ width: 150px;
     min-width: 50px;
   }
 
-  fieldset#filter-by-business-type {
+  /* fieldset#filter-by-business-type {
     left: 10px;
     z-index: 3;
     top: 50%;
-  }
+  } */
 
   fieldset#filter-by-ownership-type {
     left: 10px;
@@ -1057,15 +1046,9 @@ width: 150px;
   }
 
   #map {
-    height: 70%;
+    height: 100%;
     width: 100%;
     left: 0;
-  }
-
-  #sidebar-wrapper {
-    top: 70%;
-    height: 30%;
-    width: 100%;
   }
 
   .mapboxgl-popup-content {
@@ -1145,11 +1128,11 @@ width: 150px;
     width: 100%;
   } */
 
-  fieldset#filter-by-business-type {
+  /* fieldset#filter-by-business-type {
     left: 10px;
     z-index: 3;
     top: 50%;
-  }
+  } */
 
   span.anchor {
     font-size: 12px !important;
@@ -1185,15 +1168,9 @@ width: 150px;
   }
 
   #map {
-    height: 60%;
+    height: 100%;
     width: 100%;
     left: 0;
-  }
-
-  #sidebar-wrapper {
-    top: 60%;
-    height: 40%;
-    width: 100%;
   }
 
   p.description-text {
@@ -1230,11 +1207,11 @@ width: 150px;
     left: 0;
   }
 
-  fieldset#filter-by-business-type {
+  /* fieldset#filter-by-business-type {
     left: 10px;
     z-index: 3;
     top: 50%;
-  }
+  } */
 
   input#searchTxt {
     top: 91%;
@@ -1280,15 +1257,9 @@ width: 150px;
   }
 
   #map {
-    height: 60%;
+    height: 100%;
     width: 100%;
     left: 0;
-  }
-
-  #sidebar-wrapper {
-    top: 60%;
-    height: 40%;
-    width: 100%;
   }
 
   p.description-text {
@@ -1334,12 +1305,12 @@ width: 150px;
   }
 
   /* Fix filter dropdown positioning */
-  fieldset#filter-by-business-type {
+  /* fieldset#filter-by-business-type {
     left: 12px !important;
     width: calc(100% - 24px);
     max-width: 280px;
     box-sizing: border-box;
-  }
+  } */
 
   .dropdown-check-list {
     width: 100% !important;
@@ -1359,10 +1330,10 @@ width: 150px;
     font-size: 1rem;
   }
 
-  fieldset#filter-by-business-type {
+  /* fieldset#filter-by-business-type {
     width: calc(100vw - 24px) !important;
     max-width: none;
-  }
+  } */
 
   .dropdown-check-list {
     width: 100% !important;
