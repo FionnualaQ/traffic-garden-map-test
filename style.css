@@ -334,6 +334,12 @@ span.welcome-close-button:hover {
 }
 /* end custom control / custom button */
 
+@media screen and (min-width: 630px) {
+  .mapboxgl-ctrl-geocoder {
+    width: 500px;
+  }
+}
+
 .mapboxgl-ctrl-geocoder {
   font-size: 1rem;
 }
@@ -348,7 +354,7 @@ span.welcome-close-button:hover {
   z-index: 4;
 }
 
-@media screen and (max-width: 814px) {
+@media screen and (max-width: 768px) {
   .mapboxgl-ctrl-top-left {
     margin-top: 8px;
   }
@@ -364,10 +370,10 @@ span.welcome-close-button:hover {
   }
 
   /* everything but the search bar */
-  .mapboxgl-ctrl-top-right > :first-child {
+  /* .mapboxgl-ctrl-top-right > :first-child {
     float: none !important;
     display: inline-block;
-  }
+  } */
 }
 
 .mapboxgl-ctrl mapboxgl-ctrl-group {
@@ -603,7 +609,7 @@ a.address-text:hover {
 }
 
 .mapboxgl-popup-content {
-  font: 16px/14px "League Gothic", "Source Sans Pro", Helvetica, Arial;
+  font: 16px/14px "GillSans", "Source Sans Pro", Helvetica, Arial;
   width: 301px;
   border: 1px solid #000000;
   border-radius: 15px;
@@ -623,20 +629,13 @@ a.address-text:hover {
 .mapboxgl-popup-content div.title {
   font: 20px/14px "GillSans", "Source Sans Pro", Helvetica, Arial;
   color: #000000;
-  text-align: center;
   font-weight: bold;
   line-height: 21px;
   margin-right: 22px;
-  margin-bottom: 18px;
+  margin-bottom: 8px;
 }
 
 .mapboxgl-popup-content div.description {
-  /* font: 20px/14px "GillSans", "Source Sans Pro", Helvetica, Arial;
-color: #000000;
-text-align: center;
-font-weight: bold;
-line-height: 21px;
-margin-right: 22px; */
   margin-top: 27px;
 }
 
@@ -914,6 +913,14 @@ display: none;
     min-width: 450px;
     min-height: 525px;
     left: 50%;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  /* everything but the search bar */
+  .mapboxgl-ctrl-top-right > :first-child {
+    float: none !important;
+    display: inline-block;
   }
 }
 

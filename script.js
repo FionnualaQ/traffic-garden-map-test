@@ -40,7 +40,8 @@ var geocoder = new MapboxGeocoder({
   mapboxgl: mapboxgl,
   countries: "us, ca",
   language: "en-US",
-  placeholder: "Search for address ...",
+  placeholder: "Search for location",
+  zoom: 10,
 });
 map.addControl(geocoder, "top-right");
 // End adding the geocoding control to the map.
@@ -207,10 +208,10 @@ $.getJSON(
           popupContent += "<div class='title'><b>" + name + "</b></div><hr>";
         }
 
-        popupContent += "<p>Type : <b>" + businessType + "</b><p>";
+        popupContent += "<p><b>Type: </b>" + businessType + "<p>";
 
         if (yearOpened) {
-          popupContent += "<p>Year Opened : <b>" + yearOpened + "</b><p>";
+          popupContent += "<p><b>Year Opened: </b>" + yearOpened + "<p>";
         }
 
         if (address) {
@@ -444,8 +445,8 @@ function scrollToTheSelectedItem(currentPointId) {
 function flyToStoreOnSidebarClick(currentFeature) {
   map.flyTo({
     center: currentFeature["_lngLat"],
-    zoom: 14,
-    offset: [0, -150],
+    zoom: 11,
+    // offset: [0, -150],
     // speed: 20,
   });
 }
@@ -453,7 +454,8 @@ function flyToStoreOnSidebarClick(currentFeature) {
 function flyToStoreOnMarkerClick(currentFeature) {
   map.flyTo({
     center: currentFeature["_lngLat"],
-    offset: [0, -150],
+    zoom: 11,
+    // offset: [0, -150],
     // speed: 20,
   });
 }
@@ -493,118 +495,107 @@ function getColor(type) {
   return color;
 }
 
+let originalTypedValue = "";
 function searchByName(data) {
-  //creates a listener for when you press a key
-  window.onkeyup = keyup;
-  //creates a global Javascript variable
-  var inputTextValue;
-  function keyup(e) {
-    //setting your input text to the global Javascript Variable for every key press
-    inputTextValue = e.target.value;
-    inputTextValue = inputTextValue.trim();
-    // let regexMessaggeIoPattern = new RegExp("^[a-zA-ZÀ-ÿ ‘’']{2,60}$");
-    // inputTextValue = inputTextValue.match(regexMessaggeIoPattern);
+  // Get the geocoder input field
+  const geocoderInput = document.querySelector(".mapboxgl-ctrl-geocoder input");
 
-    //listens for you to press the ENTER key, at which point your web address will change to the one you have input in the search box
-    if (e.keyCode == 13) {
-      // window.location = "http://www.myurl.com/search/" + inputTextValue;
+  if (geocoderInput) {
+    geocoderInput.addEventListener("input", function (e) {
+      // Capture the original typed value as user types
+      originalTypedValue = e.target.value.trim();
+    });
 
-      $(".mapboxgl-popup").remove();
+    geocoderInput.addEventListener("keydown", function (e) {
+      if (e.keyCode == 13) {
+        $(".mapboxgl-popup").remove();
 
-      // console.log(features[0].properties["TM N"]);
-      // if (inputTextValue === features[0].properties["TM N"]) {
-      //   console.log("This is the point");
-      // } else {
-      //   console.log("This is NOT the point");
-      // }
+        var searchValue = originalTypedValue;
+        var positiveArray = data.filter(function (value) {
+          if (searchValue.indexOf("'") > -1) {
+            searchValue = searchValue.replace("'", "'");
+          }
 
-      // search for point by Ref number
+          var tableValue = value["name"];
+          if (tableValue.indexOf("'") > -1) {
+            tableValue = tableValue.replace("'", "'");
+          }
+          return tableValue.toLowerCase() === searchValue.toLowerCase();
+        });
 
-      var positiveArray = data.filter(function (value) {
-        if (inputTextValue.indexOf("’") > -1) {
-          inputTextValue = inputTextValue.replace("’", "'");
+        var popupContent = "";
+        if (positiveArray[0].name) {
+          popupContent +=
+            "<div class='title'><b>" + positiveArray[0].name + "</b></div><hr>";
         }
 
-        var tableValue = value["name"];
-        if (tableValue.indexOf("’") > -1) {
-          tableValue = tableValue.replace("’", "'");
+        popupContent +=
+          "<p><b>Type:</b>" + positiveArray[0].businessType + "<p>";
+
+        if (positiveArray[0].yearOpened) {
+          popupContent +=
+            "<p>Year Opened : <b>" + positiveArray[0].yearOpened + "</b><p>";
         }
-        return tableValue.toLowerCase() === inputTextValue.toLowerCase();
-      });
 
-      var popupContent = "";
-      if (positiveArray[0].name) {
-        popupContent +=
-          "<div class='title'><b>" + positiveArray[0].name + "</b></div><hr>";
+        if (positiveArray[0].address) {
+          popupContent +=
+            "<div class='popup-link-div'><img class='address-icon' src='icons/location.png'><a class='web-links address-text' target='_blank' href='https://www.google.com/maps/dir//" +
+            positiveArray[0].latitude +
+            "," +
+            positiveArray[0].longitude +
+            "'>" +
+            positiveArray[0].address +
+            "</a></div>";
+        }
+
+        if (positiveArray[0].website) {
+          popupContent +=
+            "<div class='popup-link-div'><img class='address-icon' src='icons/website.png'><a class='web-links address-text' target='_blank' href='" +
+            positiveArray[0].website +
+            "'>Website</a></div>";
+        }
+
+        if (positiveArray[0].phone) {
+          popupContent +=
+            "<div class='popup-link-div'><img class='address-icon' src='icons/phone.png'><a class='web-links address-text' target='_blank' href='tel:" +
+            positiveArray[0].phone +
+            "'>" +
+            positiveArray[0].phone +
+            "</a></div>";
+        }
+
+        const popup = new mapboxgl.Popup({ closeOnClick: false })
+          .setLngLat([positiveArray[0].longitude, positiveArray[0].latitude])
+          .setHTML(popupContent)
+          .addTo(map);
+
+        /*`<h3 style="background-color: #000000">${positiveArray[0].name}</h3><p class='popup-summary'>${positiveArray[0].summary}</p><p class='popup-website'><a class='phone-call-button' href="${positiveArray[0].website}">Learn more</a></p>`*/
+
+        var latitude = positiveArray[0].latitude;
+        var longitude = positiveArray[0].longitude;
+
+        map.flyTo({
+          center: [longitude, latitude],
+          zoom: 12,
+          essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+          // offset: [0, -150],
+        });
+        // end searching for a point by Ref Number
+
+        const activeItem = document.getElementsByClassName("active");
+        if (activeItem[0]) {
+          activeItem[0].classList.remove("active");
+        }
+        const listing = document.getElementById(
+          `sidebar-details-point-id-${positiveArray[0].id}`
+        );
+        listing.classList.add("active");
+
+        // scroll to the item in the sidebar
+        listing.scrollIntoView({ behavior: "smooth", inline: "start" });
+        // end scroll to the item in the sidebar
       }
-
-      popupContent +=
-        "<p>Type : <b>" + positiveArray[0].businessType + "</b><p>";
-
-      if (positiveArray[0].yearOpened) {
-        popupContent +=
-          "<p>Year Opened : <b>" + positiveArray[0].yearOpened + "</b><p>";
-      }
-
-      if (positiveArray[0].address) {
-        popupContent +=
-          "<div class='popup-link-div'><img class='address-icon' src='icons/png/location.png'><a class='web-links address-text' target='_blank' href='https://www.google.com/maps/dir//" +
-          positiveArray[0].latitude +
-          "," +
-          positiveArray[0].longitude +
-          "'>" +
-          positiveArray[0].address +
-          "</a></div>";
-      }
-
-      if (positiveArray[0].website) {
-        popupContent +=
-          "<div class='popup-link-div'><img class='address-icon' src='icons/png/website.png'><a class='web-links address-text' target='_blank' href='" +
-          positiveArray[0].website +
-          "'>Website</a></div>";
-      }
-
-      if (positiveArray[0].phone) {
-        popupContent +=
-          "<div class='popup-link-div'><img class='address-icon' src='icons/png/phone.png'><a class='web-links address-text' target='_blank' href='tel:" +
-          positiveArray[0].phone +
-          "'>" +
-          positiveArray[0].phone +
-          "</a></div>";
-      }
-
-      const popup = new mapboxgl.Popup({ closeOnClick: false })
-        .setLngLat([positiveArray[0].longitude, positiveArray[0].latitude])
-        .setHTML(popupContent)
-        .addTo(map);
-
-      /*`<h3 style="background-color: #000000">${positiveArray[0].name}</h3><p class='popup-summary'>${positiveArray[0].summary}</p><p class='popup-website'><a class='phone-call-button' href="${positiveArray[0].website}">Learn more</a></p>`*/
-
-      var latitude = positiveArray[0].latitude;
-      var longitude = positiveArray[0].longitude;
-
-      map.flyTo({
-        center: [longitude, latitude],
-        zoom: 14,
-        essential: true, // this animation is considered essential with respect to prefers-reduced-motion
-        zoom: 14,
-        offset: [0, -150],
-      });
-      // end searching for a point by Ref Number
-
-      const activeItem = document.getElementsByClassName("active");
-      if (activeItem[0]) {
-        activeItem[0].classList.remove("active");
-      }
-      const listing = document.getElementById(
-        `sidebar-details-point-id-${positiveArray[0].id}`
-      );
-      listing.classList.add("active");
-
-      // scroll to the item in the sidebar
-      listing.scrollIntoView({ behavior: "smooth", inline: "start" });
-      // end scroll to the item in the sidebar
-    }
+    });
   }
   // end listener when you press a key
 }
