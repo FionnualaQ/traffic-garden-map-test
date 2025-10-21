@@ -1,18 +1,27 @@
 // start creating the modals
 // first modal
-$("div.welcome-first").addClass("visible-welcome");
 
-$("div.welcome-first").html(
-  '<div class="welcome-content"><span class="welcome-close-button">X</span><div class="sidebar-content-inner"><h1 class="welcome-popup">Welcome to the 2025 North American Traffic Gardens Map!</h1><p>This is a map of permanent traffic garden installations located in North America.<br><br><img class="welcome-image-icon" src="icons/traffic-garden-court.svg"><span class="welcome-text-icon">Traffic Garden Court</span><div class="welcome-text-description-icon">Traffic Garden Court - street network of surface-applied or "painted" on hard surface.</div></br><img class="welcome-image-icon" src="icons/traffic-garden-park.svg"><span class="welcome-text-icon">Traffic Garden Park</span><div class="welcome-text-description-icon">Traffic Garden Park - networked set of miniature streets (sometimes with curb)</div><br><p class="welcome-text-description-two">This is an on-going project to locate and identify traffic gardens and update known information about each installation. Please send corrections or new information to <a class="welcome-email" href="mailto:Finn@TrafficGardens.com">Finn@TrafficGardens.com</a> to have data corrected as well as having new and missed traffic gardens added to the map. If possible, also include photos or project information so that we can categorize by type.</p></div></div><div class="parent-images"></div><div class="sidebar-content-inner"></div><div></div><div class="buildings"></div></div>'
-);
+var SHEET_ID = "1aW03J0dFPrNx09ZcT-su5Kxc2DzSrIX_X_2-az7IPws";
+var API_KEY = "AIzaSyD4q3JR3nJ9ohF8ggsO97rGVZP5qc5Fn5E";
+
+var DEFAULT_MARKER_ICON = "bike.svg";
+
+getIconColorData().then((iconRules) => {
+  $("div.welcome-first").load("welcome.html", function () {
+    // Populate icon legend after icon rules loaded from spreadsheet and welcome.html is loaded
+    $(".welcome-close-button").on("click", function () {
+      $("div.visible-welcome").removeClass("visible-welcome");
+    });
+    populateIconLegend(iconRules);
+    populateFilterCheckboxes(iconRules);
+  });
+});
+
+$("div.welcome-first").addClass("visible-welcome");
 
 $(".first-welcome-button").on("click", function () {
   $("div.welcome-first").removeClass("visible-welcome");
   $("div.welcome-second").addClass("visible-welcome");
-});
-
-$(".welcome-close-button").on("click", function () {
-  $("div.visible-welcome").removeClass("visible-welcome");
 });
 
 $(".button-start-welcome").on("click", function () {
@@ -147,10 +156,86 @@ var bounds = new mapboxgl.LngLatBounds();
 var windowheight = $(window).height();
 var windowWidth = $(window).width();
 
-/// loading POIs data from Google Sheets table///
+function getIconColorData() {
+  return new Promise((resolve, reject) => {
+    $.getJSON(
+      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Icons!A2:D3000?majorDimension=ROWS&key=${API_KEY}`
+    )
+      .done(function (data) {
+        resolve(data.values);
+      })
+      .fail(function (jqXHR, textStatus, errorThrown) {
+        reject(new Error(textStatus + ": " + errorThrown));
+      });
+  });
+}
+
+async function populateIconLegend(iconRules) {
+  try {
+    const icons = await getUrlsFromIconRules(iconRules);
+    const legendContainer = $("#icon-legend");
+    iconRules.forEach((rule) => {
+      const type = rule[0];
+      const color = rule[1];
+      const filename = rule[2];
+      const description = rule[3];
+
+      if (type && filename) {
+        const iconUrl = icons[type].replace("url(", "").replace(")", "");
+        const legendItem = `
+          <div class="icon-legend-item">
+            <div class="welcome-image-icon marker" style="background-image: url('${iconUrl}'); background-color: ${color}; "></div>
+            <span class="welcome-text-icon">${type} ${
+          description ? " - " + description : ""
+        }</span>
+          </div>
+        `;
+        legendContainer.append(legendItem);
+      }
+    });
+  } catch (error) {
+    console.error("Error populating icon legend:", error);
+  }
+}
+
+async function populateFilterCheckboxes(iconRules) {
+  try {
+    const filterList = $("#filter-by-business-type .items");
+
+    iconRules.forEach((rule) => {
+      const type = rule[0];
+
+      if (type) {
+        const typeId = type
+          .toLowerCase()
+          .replace(/\s/g, "-")
+          .replaceAll(",", "")
+          .replaceAll("/", "-");
+        const filterItem = `
+          <li>
+            <input
+              class="business-input"
+              name="filter-by-business-type-input"
+              id="${typeId}"
+              type="checkbox"
+              value="${typeId}"
+              checked
+            /><label for="${typeId}">${type}</label>
+          </li>
+        `;
+        filterList.append(filterItem);
+      }
+    });
+  } catch (error) {
+    console.error("Error populating filter checkboxes:", error);
+  }
+}
+
 $.getJSON(
-  "https://sheets.googleapis.com/v4/spreadsheets/1PyHJnqxj0fAzzbr6nHhIo_4i2QcYIz8WFFCyz-UN0n0/values/North-America!A2:I3000?majorDimension=ROWS&key=AIzaSyD4q3JR3nJ9ohF8ggsO97rGVZP5qc5Fn5E",
-  function (response) {
+  `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/North-America!A2:I3000?majorDimension=ROWS&key=${API_KEY}`,
+  async function (response) {
+    const iconRules = await getIconColorData();
+    const icons = await getUrlsFromIconRules(iconRules);
     response.values.forEach(function (marker) {
       if (typeof marker[2] !== "undefined") {
         allPointsAmount++;
@@ -193,8 +278,7 @@ $.getJSON(
           id +
           "'><p class='point-yearOpened'>" +
           businessType +
-          " | " +
-          yearOpened +
+          (yearOpened ? " | " + yearOpened : "") +
           "</div></div>";
 
         $("#sidebar").append(selectedPointDetails);
@@ -258,8 +342,8 @@ $.getJSON(
           .setPopup(popup)
           .addTo(map);
 
-        el.style.backgroundImage = "url(icons/default-marker.svg)";
-        el.style.backgroundColor = getColor(businessTypeSmallLetters);
+        el.style.backgroundImage = icons[businessType];
+        el.style.backgroundColor = getColor(iconRules, businessType);
 
         el.addEventListener("click", (e) => {
           flyToStoreOnMarkerClick(markerObj);
@@ -373,23 +457,19 @@ $.getJSON(
 
     $(".mapboxgl-canvas").click(function () {
       $(".mapboxgl-popup").remove();
-      checkList.classList.remove("visible");
     });
   }
 );
 
-//////////////// open/close dropdown menu for business type filter
-// Moved to button-filters control - see triggerFilters function
-// var checkList = document.getElementById("list1");
-// checkList.getElementsByClassName("anchor")[0].onclick = function (evt) {
-//   if (checkList.classList.contains("visible"))
-//     checkList.classList.remove("visible");
-//   else checkList.classList.add("visible");
-// };
-//////////////
-
-$("input[type='checkbox'][name='filter-by-business-type-input']").click(
+$(document).on(
+  "click",
+  "input[type='checkbox'][name='filter-by-business-type-input']",
   function () {
+    // Skip "Select All" checkbox
+    if ($(this).attr("id") === "all-businesses") {
+      return;
+    }
+
     var currentCountry = $(this).val();
     if ($(this).is(":checked")) {
       $("[data-business-type='" + currentCountry + "']").each(function (index) {
@@ -473,26 +553,55 @@ function createPopUp(currentFeature) {
     .addTo(map);
 }
 
-function getColor(type) {
-  var color = "";
-  switch (type) {
-    case "traffic-garden-court":
-      color = "#168039";
-      break;
-    case "traffic-garden-park":
-      color = "#0074d9";
-      break;
-    case "coming-soon":
-      color = "#553285";
-      break;
-    case "canadian-facilities":
-      color = "#94090d";
-      break;
+function getUrlsFromIconRules(iconRules) {
+  const iconUrls = {};
+  iconRules.forEach((rule) => {
+    const type = rule[0];
+    const filename = rule[2];
+    let foundUrl = null;
 
-    default:
-      iconUrl = "#94090d";
+    if (filename) {
+      // Try .svg
+      let svgPath = `icons/${filename}.svg`;
+      try {
+        if (
+          $.ajax({ url: svgPath, type: "HEAD", async: false }).status === 200
+        ) {
+          foundUrl = `url(${svgPath})`;
+        }
+      } catch (e) {}
+
+      // Try .png if .svg not found
+      if (!foundUrl) {
+        let pngPath = `icons/${filename}.png`;
+        try {
+          if (
+            $.ajax({ url: pngPath, type: "HEAD", async: false }).status === 200
+          ) {
+            foundUrl = `url(${pngPath})`;
+          }
+        } catch (e) {}
+      }
+
+      if (!foundUrl) {
+        console.warn(`Icon file not found: icons/${filename}, using fallback`);
+        foundUrl = `url(icons/${DEFAULT_MARKER_ICON})`;
+      }
+    } else {
+      foundUrl = `url(icons/${DEFAULT_MARKER_ICON})`;
+    }
+
+    iconUrls[type] = foundUrl;
+  });
+  return iconUrls;
+}
+
+function getColor(iconRules, type) {
+  const rule = iconRules.find((x) => x[0] === type);
+  if (rule) {
+    return rule[1]; // hex color
   }
-  return color;
+  return "#168039"; // fallback
 }
 
 let originalTypedValue = "";
