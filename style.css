@@ -512,6 +512,7 @@ cursor: pointer;
 p,
 h3 {
   margin: 5px;
+  margin-left: 0px;
 }
 
 p {
@@ -741,7 +742,7 @@ p.point-description {
 p.point-title {
   color: #ff6517;
   font-weight: bold;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 p.point-description {
@@ -756,10 +757,17 @@ display: none;
 
 .sidebar-details-points {
   margin-left: 2%;
-  padding-left: 3%;
+  /* padding-left: 3%;
   padding-right: 12px;
-  padding-bottom: 10px;
+  padding-bottom: 10px; */
+  padding: 10px 12px 10px 0px;
   border-top: 1px solid #b7b7b7;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+}
+
+.sidebar-point-text {
+  margin-left: 4px;
 }
 
 .sidebar-details-points:hover {

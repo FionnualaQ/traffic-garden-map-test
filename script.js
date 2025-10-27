@@ -261,30 +261,6 @@ $.getJSON(
 
         var id = marker[8];
 
-        var selectedPointDetails =
-          "<div data-business-type-visible='true' data-business-type='" +
-          businessTypeSmallLetters +
-          "' class='sidebar-details-points " +
-          businessTypeSmallLetters +
-          " " +
-          "' id='sidebar-details-point-id-" +
-          id +
-          "'>";
-
-        selectedPointDetails += "<p class='point-title'>" + name + "</p>";
-
-        selectedPointDetails +=
-          "<div class='sidebar-points-additional-info'  id='sidebar-point-additional-info-" +
-          id +
-          "'><p class='point-yearOpened'>" +
-          businessType +
-          (yearOpened ? " | " + yearOpened : "") +
-          "</div></div>";
-
-        $("#sidebar").append(selectedPointDetails);
-
-        $("sidebar-point-additional-info-" + id).css("display", "none");
-
         bounds.extend([longitude, latitude]);
 
         var popupContent = "";
@@ -366,6 +342,39 @@ $.getJSON(
           $("#sidebar-point-additional-info-" + id).css("display", "block");
           $("#sidebar-details-point-id-" + id).addClass("active");
         });
+
+        var selectedPointDetails =
+          "<div data-business-type-visible='true' data-business-type='" +
+          businessTypeSmallLetters +
+          "' class='sidebar-details-points " +
+          businessTypeSmallLetters +
+          " " +
+          "' id='sidebar-details-point-id-" +
+          id +
+          "'>";
+
+        // selectedPointDetails += "<div class='marker'></div>";
+
+        selectedPointDetails += "<div class='sidebar-point-text'>";
+        selectedPointDetails += "<p class='point-title'>" + name + "</p>";
+
+        selectedPointDetails +=
+          "<div class='sidebar-points-additional-info'  id='sidebar-point-additional-info-" +
+          id +
+          "'><p class='point-yearOpened'>" +
+          businessType +
+          (yearOpened ? " | " + yearOpened : "") +
+          "</div></div>";
+        selectedPointDetails += "</div>";
+
+        $("#sidebar").append(selectedPointDetails);
+
+        var clonedMarker = el.cloneNode(true);
+        clonedMarker.className = "marker sidebar-marker";
+        clonedMarker.style.transform = "";
+        $("#sidebar-details-point-id-" + id).prepend(clonedMarker);
+
+        $("sidebar-point-additional-info-" + id).css("display", "none");
 
         $(".sidebar-details-points").click(function (e) {
           var currentSidebaritemId = e.currentTarget.id;
