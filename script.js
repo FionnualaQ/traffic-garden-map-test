@@ -472,48 +472,44 @@ $.getJSON(
 
 $(document).on(
   "click",
-  "input[type='checkbox'][name='filter-by-business-type-input']",
+  "input[type='checkbox'][name='filter-by-business-type-input']:not(#all-businesses)",
   function () {
-    // Skip "Select All" checkbox
-    if ($(this).attr("id") === "all-businesses") {
-      return;
-    }
-
     var currentCountry = $(this).val();
     if ($(this).is(":checked")) {
       $("[data-business-type='" + currentCountry + "']").each(function (index) {
         $(this).attr("data-business-type-visible", "true");
-        $(this).css("display", "block");
+        $(this).css("display", "");
       });
     } else {
       $("[data-business-type='" + currentCountry + "']").each(function (index) {
         $(this).attr("data-business-type-visible", "false");
-        $(this).css("display", "none");
+        if (
+          $(this).hasClass("sidebar-details-points") ||
+          $(this).hasClass("mapboxgl-marker")
+        ) {
+          $(this).css("display", "none");
+        }
       });
     }
   }
 );
 
-$("#all-businesses").click(function () {
+$(document).on("click", "#all-businesses", function () {
   if (selectAllBusinesses) {
     $(".marker").attr("data-business-type-visible", "false");
+    $(".marker.mapboxgl-marker").css("display", "none");
     $("div.sidebar-details-points").attr("data-business-type-visible", "false");
+    $("div.sidebar-details-points").css("display", "none");
     $("input.business-input").prop("checked", false);
+    $(this).prop("checked:not(#all-businesses)", true); // Keep "Select All" checked
     selectAllBusinesses = false;
   } else {
     $(".marker").attr("data-business-type-visible", "true");
+    $(".marker.mapboxgl-marker").css("display", "block");
     $("div.sidebar-details-points").attr("data-business-type-visible", "true");
+    $("div.sidebar-details-points").css("display", "");
     $("input.business-input").prop("checked", true);
     selectAllBusinesses = true;
-  }
-  for (i = 0; i <= allPointsAmount; i++) {
-    if ($("#" + i).attr("data-business-type-visible") === "true") {
-      $("#" + i).css("display", "block");
-      $("#sidebar-details-point-id-" + i).css("display", "block");
-    } else {
-      $("#" + i).css("display", "none");
-      $("#sidebar-details-point-id-" + i).css("display", "none");
-    }
   }
 });
 
