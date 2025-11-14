@@ -318,7 +318,8 @@ $.getJSON(
           .setPopup(popup)
           .addTo(map);
 
-        el.style.backgroundImage = icons[businessType];
+        el.style.backgroundImage =
+          icons[businessType] ?? `url(icons/${DEFAULT_MARKER_ICON})`;
         el.style.backgroundColor = getColor(iconRules, businessType);
 
         el.addEventListener("click", (e) => {
