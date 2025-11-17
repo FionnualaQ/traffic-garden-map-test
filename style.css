@@ -1,14 +1,29 @@
 /* load font*/
 
+:root {
+  --accent-color: #0074d9;
+  --accent-color-darker: #035caa;
+}
+
 @font-face {
   font-family: "GillSans";
   src: url("gill-sans-nova-light.ttf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GillSans";
+  src: url("gill-sans-nova-regular.ttf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
 }
 
 body {
   margin: 0;
   padding: 0;
   font-family: "GillSans";
+  font-weight: 300;
   /* Force proper scaling in iframes */
   width: 100vw;
   max-width: 100%;
@@ -99,9 +114,9 @@ input#searchTxt {
   position: relative;
   height: 40px;
   width: 75%;
-  color: #ff6517;
-  outline-color: #ff6517;
-  font: 400 15px/22px "Source Sans Pro", "Helvetica Neue", sans-serif;
+  color: var(--accent-color);
+  outline-color: var(--accent-color);
+  font: 400 14px/22px "Source Sans Pro", "Helvetica Neue", sans-serif;
 }
 
 /*end search box by business name*/
@@ -122,15 +137,15 @@ span.welcome-text-icon {
 }
 
 span.welcome-email {
-  color: #ff6517;
+  color: var(--accent-color);
 }
 
 div.welcome-text-description-icon {
-  font-size: 14px;
+  font-size: 1rem;
 }
 
 p.welcome-text-description-two {
-  font-size: 14px;
+  font-size: 1rem;
 }
 
 .sidebar-content-inner {
@@ -138,8 +153,8 @@ p.welcome-text-description-two {
 }
 
 h1.welcome-popup {
-  font-weight: 700;
-  font-size: 24px;
+  font-weight: 400;
+  font-size: 1.5rem;
   line-height: 36px;
   text-align: center;
   margin-bottom: 20px;
@@ -147,9 +162,9 @@ h1.welcome-popup {
 
 @media screen and (max-width: 768px) {
   h1.welcome-popup {
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 24px;
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 1.5rem;
     text-align: left;
     margin: 20px 0px;
   }
@@ -174,7 +189,7 @@ a#donations-link {
   font-weight: 800;
 }
 a#donations-link:hover {
-  background-color: #ff6517;
+  background-color: var(--accent-color);
   color: #ffffff;
 }
 
@@ -192,10 +207,10 @@ a#donations-link:hover {
   background-color: white;
   z-index: 2001;
   position: absolute;
-  width: 33%;
+  width: 55%;
   min-width: 450px;
   min-height: 464px;
-  height: 80%;
+  /* height: 80%; */
   left: 50%;
   top: 10%;
   transform: translateX(-50%);
@@ -210,7 +225,6 @@ div.welcome-content {
   overflow-y: auto !important;
   overflow-x: hidden;
   height: 100%;
-  /* font-size: 20px; */
 }
 
 /* div.welcome-content {
@@ -240,80 +254,65 @@ button.welcome-button {
   height: 47px;
   box-sizing: border-box;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
   text-align: center;
   text-decoration: none;
   border-radius: 8px;
   width: 186px;
-  margin-right: 15px;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-right: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   cursor: pointer;
 }
 
 .first-welcome-button {
+  font-family: "GillSans";
   display: block;
-  height: 47px;
+  height: 32px;
   box-sizing: border-box;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: center;
+  text-align: left;
   text-decoration: none;
-  border-radius: 8px;
-  width: 186px;
-  margin: 0 auto;
+  border-radius: 4px;
+  margin: 12px 0;
   cursor: pointer;
-  background-color: #ff6517;
-  border-color: #ff6517;
-  color: #ffffff;
+  background-color: white;
+  border: 1px solid black;
+  color: black;
 }
 
-.second-welcome-previous-button,
-.third-welcome-previous-button,
-.fourth-welcome-previous-button {
-  background-color: #252424;
-  border-color: #252424;
-  color: #ffffff;
-  margin-left: 30px;
+.first-welcome-button a {
+  text-decoration: none;
+  color: unset;
 }
 
-.second-welcome-next-button,
-.third-welcome-next-button,
-.fourth-welcome-next-button {
-  color: #fff;
-  background-color: #ff6517;
-  border-color: #ff6517;
+.first-welcome-button:hover,
+span.welcome-close-button:hover,
+button.mapboxgl-popup-close-button:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background-color: white;
 }
 
 span.welcome-close-button {
   float: right;
   right: 13px;
   border-radius: 21px;
-  background-color: #ff6517;
-  border: 1px solid #ff6517;
+  background-color: white;
+  border: 1px solid black;
   width: 26px;
   height: 26px;
-  font-size: 14px;
+  font-size: 0.75rem;
   /* color: #E94E1B; */
   cursor: pointer;
-  margin-top: 15px;
-  margin-right: 15px;
+  margin-top: 12px;
+  margin-right: 12px;
   padding: 0;
   line-height: 26px;
-  font-weight: bold;
+  font-weight: 400;
   text-align: center;
-  color: #ffffff;
+  color: black;
 }
 
-span.welcome-close-button:hover {
-  /* border-color: #E94E1B; */
-  /* background-color: #E94E1B; */
-  color: #252424;
-  background-color: #ffffff;
-  border: 1px solid #252424;
-}
 /* end welcome popup styling */
 
 /* custom control / custom button */
@@ -395,13 +394,13 @@ span.anchor {
 
 fieldset#filter-by-business-type,
 fieldset#filter-by-ownership-type {
-  font-weight: 500;
+  font-weight: 300;
   background-color: #ffffff;
   position: absolute;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin: 0;
-  font-size: 17px;
+  font-size: 1rem;
   z-index: 1000;
   display: none;
 }
@@ -470,8 +469,8 @@ fieldset#filter-by-ownership-type {
 }
 
 .marker-text {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 1.25rem;
+  font-weight: 400;
   margin-right: 8px;
 }
 
@@ -516,7 +515,7 @@ h3 {
 }
 
 p {
-  font-size: 15px;
+  font-size: 1rem;
 }
 
 /*popup styling*/
@@ -529,47 +528,39 @@ p {
   background-color: #ffffff;
   width: 20px;
   height: 20px;
-  font-size: 14px;
+  font-size: 1rem;
   color: #000000;
   cursor: pointer;
   margin-top: 10px;
   padding: 0;
 }
 
-.mapboxgl-popup-close-button:hover {
-  /* border-color: #000000; */
-  background-color: #000000;
-  color: #ffffff;
-}
-
 div.popup-link-div {
-  margin-top: 10px;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  font-weight: 300;
 }
 
 div.web-links-div {
-  display: inline-block;
+  /* display: inline-block; */
   outline: none !important;
 }
 
 div > img.address-icon {
-  width: 21px;
-  margin-right: 10px;
-  padding: 5px;
+  height: 20px;
+  margin-right: 8px;
 }
 
 img.web-icons {
-  width: 21px;
-  margin-right: 10px;
-  padding: 5px;
+  height: 20px;
+  margin-right: 8px;
   outline: none !important;
   border: none;
 }
 
 img.web-icons:hover {
-  width: 21px;
-  border-radius: 3px;
-  margin-right: 10px;
-  background-color: #ff6517;
+  height: 20px;
   cursor: pointer;
 }
 
@@ -579,12 +570,8 @@ a.web-links {
 
 div > a.web-links {
   text-decoration: none;
-  margin-top: 2px;
-  position: absolute;
   color: #000000;
-  margin-left: -10px;
   width: 255px;
-  padding: 5px;
   outline: none !important;
 }
 
@@ -604,10 +591,8 @@ p.description-text {
 }
 
 a.address-text:hover {
-  border-radius: 3px;
-  background-color: #ff6517;
   cursor: pointer;
-  color: #ffffff;
+  color: var(--accent-color);
 }
 
 .mapboxgl-popup-tip {
@@ -618,7 +603,7 @@ a.address-text:hover {
   font: 16px/14px "GillSans", "Source Sans Pro", Helvetica, Arial;
   width: 301px;
   border: 1px solid #000000;
-  border-radius: 15px;
+  border-radius: 8px;
   background-color: #ffffff;
   color: #000000;
   margin-left: -12px;
@@ -635,7 +620,7 @@ a.address-text:hover {
 .mapboxgl-popup-content div.title {
   font: 20px/14px "GillSans", "Source Sans Pro", Helvetica, Arial;
   color: #000000;
-  font-weight: bold;
+  font-weight: 400;
   line-height: 21px;
   margin-right: 22px;
   margin-bottom: 8px;
@@ -736,17 +721,15 @@ p.point-title,
 p.point-description {
   margin-left: 0;
   margin-right: 0;
-  font-size: 15px;
+  font-size: 1rem;
 }
 
 p.point-title {
-  color: #ff6517;
-  font-weight: bold;
+  font-weight: 400;
   margin: 0;
 }
 
 p.point-description {
-  color: #ff6517;
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -764,6 +747,10 @@ display: none;
   border-top: 1px solid #b7b7b7;
   display: grid;
   grid-template-columns: 28px 1fr;
+}
+
+.sidebar-details-points:hover {
+  color: var(--accent-color);
 }
 
 .sidebar-point-text {
@@ -807,7 +794,7 @@ display: none;
   }
 
   span.anchor {
-    font-size: 12px !important;
+    font-size: 0.75rem !important;
   }
 
   #map-container {
@@ -827,8 +814,8 @@ display: none;
   }
 
   .mapboxgl-popup-content p {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 0.8rem;
+    line-height: 0.8rem;
   }
 
   img.web-icons {
@@ -842,12 +829,12 @@ display: none;
 
   div > a.web-links {
     width: 162px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   p.description-text {
     max-height: 66px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   div#block-yui_3_17_2_1_1684184820496_4025 {
@@ -868,7 +855,7 @@ display: none;
   }
 
   span.anchor {
-    font-size: 12px !important;
+    font-size: 1rem !important;
   }
 
   #map-container {
@@ -888,8 +875,8 @@ display: none;
   }
 
   .mapboxgl-popup-content p {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 1rem;
+    line-height: 1rem;
   }
 
   img.web-icons {
@@ -903,12 +890,12 @@ display: none;
 
   div > a.web-links {
     width: 162px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   p.description-text {
     max-height: 66px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   div#block-yui_3_17_2_1_1684184820496_4025 {
@@ -924,7 +911,7 @@ display: none;
   .visible-welcome {
     width: 25%;
     min-width: 450px;
-    min-height: 525px;
+    min-height: 550px;
     left: 50%;
   }
 }
@@ -944,7 +931,7 @@ display: none;
     top: 50%;
   } */
   span.anchor {
-    font-size: 12px !important;
+    font-size: 1rem !important;
   }
 
   #map-container {
@@ -964,8 +951,8 @@ display: none;
   }
 
   .mapboxgl-popup-content p {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 1rem;
+    line-height: 1rem;
   }
 
   img.web-icons {
@@ -979,12 +966,12 @@ display: none;
 
   div > a.web-links {
     width: 162px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   p.description-text {
     max-height: 66px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   div#block-yui_3_17_2_1_1684184820496_4025 {
@@ -1022,7 +1009,7 @@ width: 150px;
   .visible-welcome {
     width: 90%;
     height: 50%;
-    min-height: 525px;
+    min-height: 550px;
     display: block;
     border-radius: 7px;
     background-color: white;
@@ -1067,7 +1054,7 @@ width: 150px;
   }
 
   span.anchor {
-    font-size: 12px !important;
+    font-size: 1rem !important;
   }
 
   #map-container {
@@ -1087,8 +1074,8 @@ width: 150px;
   }
 
   .mapboxgl-popup-content p {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 1rem;
+    line-height: 1rem;
   }
 
   img.web-icons {
@@ -1102,12 +1089,12 @@ width: 150px;
 
   div > a.web-links {
     width: 162px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   p.description-text {
     max-height: 66px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   div#block-yui_3_17_2_1_1684184820496_4025 {
@@ -1165,7 +1152,7 @@ width: 150px;
   } */
 
   span.anchor {
-    font-size: 12px !important;
+    font-size: 1rem !important;
   }
 
   .mapboxgl-popup-content {
@@ -1174,8 +1161,8 @@ width: 150px;
   }
 
   .mapboxgl-popup-content p {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 1rem;
+    line-height: 1rem;
   }
 
   img.web-icons {
@@ -1189,7 +1176,7 @@ width: 150px;
 
   div > a.web-links {
     width: 162px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   #map-container {
@@ -1205,7 +1192,7 @@ width: 150px;
 
   p.description-text {
     max-height: 66px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   div#block-yui_3_17_2_1_1684184820496_4025 {
@@ -1259,8 +1246,8 @@ width: 150px;
   }
 
   .mapboxgl-popup-content p {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 1rem;
+    line-height: 1rem;
   }
 
   img.web-icons {
@@ -1279,16 +1266,16 @@ width: 150px;
   }
 
   div.title {
-    font-size: 14px;
+    font-size: 1rem;
   }
 
   div > a.web-links {
     width: 162px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   span.anchor {
-    font-size: 12px !important;
+    font-size: 1rem !important;
   }
 
   #map {
@@ -1299,7 +1286,7 @@ width: 150px;
 
   p.description-text {
     max-height: 66px;
-    font-size: 12px;
+    font-size: 1rem;
   }
 
   div#block-yui_3_17_2_1_1684184820496_4025 {
@@ -1313,7 +1300,7 @@ width: 150px;
   }
 
   .mapboxgl-ctrl-geocoder--input {
-    font-size: 14px;
+    font-size: 1rem;
   }
 }
 
@@ -1379,9 +1366,13 @@ width: 150px;
   }
 
   span.anchor {
-    font-size: 14px !important;
+    font-size: 1rem !important;
     padding: 8px 12px;
   }
 }
 
 /* End responsiveness */
+
+.mapbox-improve-map {
+  display: none;
+}
