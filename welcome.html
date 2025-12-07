@@ -2,7 +2,8 @@
 	<span class="welcome-close-button">X</span>
 	<div class="sidebar-content-inner">
 		<h1 class="welcome-popup">North American Traffic Gardens</h1>
-		<p>Welcome to the 2025 North American Traffic Gardens Map! This is a map of permanent traffic garden installations located in North America.</p>
+		<p>Welcome to the <span id="current-year"></span> North American Traffic Gardens Map! This is a map of permanent traffic garden installations located in North America.</p>
+		<script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
 		<br>
 		<div id="icon-legend"></div>
 		<br>
