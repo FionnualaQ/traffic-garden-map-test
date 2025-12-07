@@ -302,6 +302,7 @@ $.getJSON(
           );
           selectedItem.scrollIntoView({
             behavior: "smooth",
+            block: "nearest",
             inline: "start",
           });
           // end scrolling to the selected item in the sidebar
@@ -477,7 +478,7 @@ function scrollToTheSelectedItem(currentPointId) {
   var selectedItem = document.getElementById(
     "sidebar-details-point-id-" + currentPointId
   );
-  selectedItem.scrollIntoView({ behavior: "smooth", inline: "start" });
+  selectedItem.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
   // end scrolling to the selected item in the sidebar
 }
 
@@ -631,7 +632,7 @@ function searchByName(data) {
         listing.classList.add("active");
 
         // scroll to the item in the sidebar
-        listing.scrollIntoView({ behavior: "smooth", inline: "start" });
+        listing.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
         // end scroll to the item in the sidebar
       }
     });
