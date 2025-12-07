@@ -554,6 +554,11 @@ div > img.address-icon {
   margin-right: 8px;
 }
 
+div > img.feedback-icon {
+  height: 20px;
+  margin-right: 8px;
+}
+
 img.web-icons {
   height: 20px;
   margin-right: 8px;

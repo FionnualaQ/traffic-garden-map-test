@@ -478,7 +478,11 @@ function scrollToTheSelectedItem(currentPointId) {
   var selectedItem = document.getElementById(
     "sidebar-details-point-id-" + currentPointId
   );
-  selectedItem.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+  selectedItem.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest",
+    inline: "start",
+  });
   // end scrolling to the selected item in the sidebar
 }
 
@@ -632,7 +636,11 @@ function searchByName(data) {
         listing.classList.add("active");
 
         // scroll to the item in the sidebar
-        listing.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+        listing.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "start",
+        });
         // end scroll to the item in the sidebar
       }
     });
@@ -687,6 +695,9 @@ function makeMarkerPopup(
       phone +
       "</a></div>";
   }
+
+  popupContent +=
+    "<div class='popup-link-div'><img class='feedback-icon' src='icons/feedback.png'><a class='web-links address-text' target='_blank' href='https://forms.gle/E8FdLQkWRpPbgQ7a7'>Submit Feedback</a></div>";
 
   return popupContent;
 }
