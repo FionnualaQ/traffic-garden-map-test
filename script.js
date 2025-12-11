@@ -681,9 +681,10 @@ function makeMarkerPopup(
   }
 
   if (website) {
+    var websiteUrl = website.startsWith('http://') || website.startsWith('https://') ? website : 'https://' + website;
     popupContent +=
       "<div class='popup-link-div'><img class='address-icon' src='icons/website.png'><a class='web-links address-text' target='_blank' href='" +
-      website +
+      websiteUrl +
       "'>Website</a></div>";
   }
 
