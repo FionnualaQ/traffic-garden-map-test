@@ -671,7 +671,7 @@ function makeMarkerPopup(
 
   if (address) {
     popupContent +=
-      "<div class='popup-link-div'><img class='address-icon' src='icons/location.png'><a class='web-links address-text' target='_blank' href='https://www.google.com/maps/dir//" +
+      "<div class='popup-link-div'><img class='address-icon' src='icons/location.png'><a class='web-links address-text' target='_blank' href='https://www.google.com/maps/search/?api=1&query=" +
       latitude +
       "," +
       longitude +
